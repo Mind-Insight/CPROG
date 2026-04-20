@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #define N 5
 #define buff 100
@@ -13,7 +14,7 @@ typedef struct
 Stack *create()
 {
     Stack *stack = (Stack *)malloc(sizeof(Stack));
-    stack->arr = (int *)malloc(sizeof(int *) * buff);
+    stack->arr = (int**)malloc(sizeof(int *) * buff);
     stack->header = 0;
     stack->arrPtr = 0;
     return stack;
@@ -88,6 +89,7 @@ int main()
     push(stack, 6);
     pop(stack);
     push(stack, 6);
+    push(stack, 7);
     print(stack);
     free(stack);
 }

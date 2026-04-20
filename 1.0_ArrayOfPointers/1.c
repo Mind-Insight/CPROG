@@ -62,7 +62,7 @@ int *getIntervalsArr(int *arr, int size, int sscount)
 int **findIncSubseq(int *arr, int size, int *intervals, int sizeIntervals, int sscount, int additional_size)
 {
     int i = 0, j = 1;
-    int **pp = (int *)malloc(sizeof(int *) * (sscount + 2));
+    int **pp = (int**)malloc(sizeof(int *) * (sscount + 2));
     int iind = 0;
     int ipp = 0;
     int *additional = (int *)malloc(sizeof(int) * (additional_size + 1));
