@@ -34,45 +34,40 @@ void print(list* orig) {
     }
 }
 
-void unionLists(list** orig, list** new) {
-    list* last = *orig;
-    if (last != NULL)
-        while (last->next != NULL)
-            last = last->next;
-    
-    list* temp = *new;
-    while (temp != NULL) {
+void sub(list** orig, list* new) {
+    list* head1 = *orig;
+    list* prev = NULL;
+    while (head1 != NULL) {
+        list* head2 = new;
         int flag = 0;
-        list* check = *orig;
-        while (check != NULL) {
-            if (check->value == temp->value) {
+        while (head2 != NULL) {
+            if (head1->value == head2->value) {
                 flag = 1;
+                if (prev == NULL) {
+                    list* head = head1->next;
+                    free(head1);
+                    head1 = head;
+                }
+                else {
+                    prev->next = head1->next;
+                    free(head1);
+                    head1 = prev->next;
+                }
                 break;
             }
-            check = check->next;
+            head2 = head2->next;
         }
-        
         if (!flag) {
-            list* newnode = (list*)malloc(sizeof(list));
-            newnode->value = temp->value;
-            newnode->next = NULL;
-            
-            if (*orig == NULL) {
-                *orig = newnode;
-                last = newnode;
-            } else {
-                last->next = newnode;
-                last = newnode;
-            }
+            prev = head1;
+            head1 = head1->next;    
         }
-        temp = temp->next;
     }
 }
 
 
 int main() {
-    list* orig = fill(3, 10);
-    list* new = fill(5, 15);
-    unionLists(&orig, &new);
+    list* orig = fill(1, 10);
+    list* new = fill(5, 10);
+    sub(&orig, new);
     print(orig);
 }

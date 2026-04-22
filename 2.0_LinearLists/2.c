@@ -34,45 +34,43 @@ void print(list* orig) {
     }
 }
 
-void unionLists(list** orig, list** new) {
-    list* last = *orig;
-    if (last != NULL)
-        while (last->next != NULL)
-            last = last->next;
-    
-    list* temp = *new;
-    while (temp != NULL) {
+void intersection(list** orig, list** new) {
+    list* head1 = *orig;
+    list* head2 = *new;
+    list* prev = NULL;
+    while (head1 != NULL) {
         int flag = 0;
-        list* check = *orig;
-        while (check != NULL) {
-            if (check->value == temp->value) {
+        list* temp = *new;
+        while (temp != NULL) {
+            if (head1->value == temp->value) {
                 flag = 1;
                 break;
             }
-            check = check->next;
+            temp = temp->next;
         }
-        
         if (!flag) {
-            list* newnode = (list*)malloc(sizeof(list));
-            newnode->value = temp->value;
-            newnode->next = NULL;
-            
-            if (*orig == NULL) {
-                *orig = newnode;
-                last = newnode;
-            } else {
-                last->next = newnode;
-                last = newnode;
+            if (prev == NULL) {
+                *orig = head1->next;
+                free(head1);
+                head1 = *orig;
+            }
+            else {
+                prev->next = head1->next;
+                free(head1);
+                head1 = prev->next;
             }
         }
-        temp = temp->next;
+        else {
+            prev = head1;   
+            head1 = head1->next;
+        }
     }
 }
 
 
 int main() {
-    list* orig = fill(3, 10);
-    list* new = fill(5, 15);
-    unionLists(&orig, &new);
+    list* orig = fill(1, 10);
+    list* new = fill(5, 10);
+    intersection(&orig, &new);
     print(orig);
 }
