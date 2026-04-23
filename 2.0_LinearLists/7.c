@@ -59,6 +59,8 @@ void unionloopLists(loopList** orig, loopList* new) {
         return;
     }
     
+    loopList* tail = *orig;
+    while (tail->next != *orig) tail = tail->next;
     loopList* cur_new = new;
     do {
         loopList* cur_orig = *orig;
@@ -72,13 +74,11 @@ void unionloopLists(loopList** orig, loopList* new) {
         } while (cur_orig != *orig);
 
         if (!found) {
-            loopList* tail = *orig;
-            while (tail->next != *orig) tail = tail->next;
-            
             loopList* node = (loopList*)malloc(sizeof(loopList));
             node->value = cur_new->value;
             node->next = *orig;
             tail->next = node;
+            tail = node;
         }
         
         cur_new = cur_new->next;
